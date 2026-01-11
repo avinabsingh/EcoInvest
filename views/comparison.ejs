@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Company Comparison | EcoInvest</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f7f4;
+            color: #2d3a3a;
+            overflow-x: hidden;
+            background-image: url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-blend-mode: overlay;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        
+        .navbar {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.95), rgba(39, 107, 43, 0.95));
+            padding: 0 40px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            height: 80px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar.scrolled {
+            height: 70px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-search {
+            flex: 0.5;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .nav-search input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-search input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.3);
+        }
+
+        .nav-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2e7d32;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-left: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-cta {
+            background: #ffeb3b;
+            color: #2d3a3a !important;
+            padding: 10px 25px !important;
+        }
+
+        .nav-cta:hover {
+            background: #fff176 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .comparison-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(240, 247, 244, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2e7d32;
+            font-size: 2.5rem;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #81c784, #2e7d32);
+            border-radius: 2px;
+        }
+
+        .comparison-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .company-selector {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+        }
+
+        .selector-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .company-letter {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border-radius: 30px;
+            border: 2px solid #c8e6c9;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2e7d32;
+        }
+
+        .search-results {
+            position: absolute;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background: #f0f7f4;
+        }
+
+        .search-result-item img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: contain;
+        }
+
+        .search-result-item .company-info {
+            flex: 1;
+        }
+
+        .search-result-item .company-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .search-result-item .company-symbol {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .compare-btn {
+            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+            color: #2d3a3a;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(251, 192, 45, 0.3);
+        }
+
+        .compare-btn:hover {
+            background: linear-gradient(135deg, #fff176, #ffd54f);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(251, 192, 45, 0.4);
+        }
+
+        .compare-btn:disabled {
+            background: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .comparison-results {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .company-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .company-logo-lg {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border: 3px solid #c8e6c9;
+            padding: 5px;
+            background: white;
+        }
+
+        .company-name-lg {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .company-symbol-lg {
+            font-size: 1rem;
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .vs-circle {
+            width: 60px;
+            height: 60px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 20px;
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-title i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .metric-values {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            flex: 1;
+        }
+
+        .metric-bar-container {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .metric-bar {
+            height: 100%;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #81c784, #2e7d32);
+            width: 50%;
+        }
+
+        .winner {
+            color: #2e7d32;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .overall-score {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .score-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1b5e20;
+            margin: 20px 0;
+        }
+
+        .score-difference {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .score-difference.higher {
+            color: #2e7d32;
+        }
+
+        .score-difference.lower {
+            color: #c62828;
+        }
+
+        
+        .graphs-section {
+            margin-top: 50px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .graphs-title {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .graphs-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #81c784, #2e7d32);
+        }
+
+        .graphs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .graph-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            height: 400px;
+        }
+
+        .graph-title {
+            font-size: 1.2rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: calc(100% - 40px);
+            width: 100%;
+        }
+
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(46, 125, 50, 0.2);
+            border-radius: 50%;
+            border-top-color: #2e7d32;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+       
+        .footer {
+            background: linear-gradient(135deg, rgba(30, 80, 40, 0.95), rgba(20, 70, 35, 0.95));
+            color: white;
+            padding: 60px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaf-decoration {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .leaf-1 {
+            top: 20px;
+            left: 5%;
+            transform: rotate(30deg);
+        }
+
+        .leaf-2 {
+            bottom: 40px;
+            right: 10%;
+            transform: rotate(-20deg);
+        }
+
+        .leaf-3 {
+            top: 50%;
+            left: 7%;
+            transform: rotate(45deg);
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-about {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .footer-logo i {
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-weight: 700;
+        }
+
+        .footer-about p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            flex: 0 0 200px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #81c784;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .footer-newsletter {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 30px;
+        }
+
+        .footer-newsletter h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-newsletter h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #81c784;
+        }
+
+        .footer-newsletter p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background: #81c784;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background: #66bb6a;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.9rem;
+            color: #bdbdbd;
+        }
+
+        .footer-bottom a {
+            color: #81c784;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+            }
+            
+            .footer-about, .footer-links, .footer-newsletter {
+                padding-right: 0;
+            }
+
+            .graphs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                flex-direction: column;
+                height: auto;
+                padding: 15px 20px;
+            }
+            
+            .navbar-brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-search {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .navbar-nav {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .nav-item {
+                margin: 5px 0;
+            }
+            
+            .nav-link {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .comparison-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .company-selector {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .vs-circle {
+                margin: 20px 0;
+            }
+            
+            .main-content {
+                margin-top: 120px;
+            }
+
+            .graph-card {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .comparison-container {
+                padding: 25px;
+            }
+            
+            .metric-card {
+                padding: 20px;
+            }
+            
+            .footer-links {
+                flex: 0 0 100%;
+            }
+
+            .graphs-container {
+                grid-template-columns: 1fr;
+            }
+
+            .graph-card {
+                min-width: 100%;
+                height: 250px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-brand">
+            <i class="fas fa-leaf"></i>
+            EcoInvest
+        </a>
+
+        <div class="nav-search">
+            <input type="search" id="search" placeholder="Search companies...">
+            <i class="fas fa-search"></i>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="\Home" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-balance-scale"></i> Compare
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/chatbot" class="nav-link">
+                    <i class="fas fa-chart-line"></i> ChatBot
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link nav-cta">
+                    <i class="fas fa-user-plus"></i> Join Now
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    
+    <div class="main-content">
+        <div class="comparison-container">
+            <h1 class="page-title">ESG Company Comparison</h1>
+            
+            <div class="comparison-form">
+                <div class="company-selector">
+                    <div class="selector-header">
+                        <div class="company-letter">A</div>
+                        <h3>First Company</h3>  
+                    </div>
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="companyAInput" placeholder="Search for a company...">
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-results" id="companyAResults"></div>
+                    </div>
+                    <div class="selected-company" id="selectedCompanyA" style="display: none; margin-top: 20px;">
+                        <div class="selected-info">
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="company-selector">
+                    <div class="selector-header">
+                        <div class="company-letter">B</div>
+                        <h3>Second Company</h3>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="companyBInput" placeholder="Search for a company...">
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-results" id="companyBResults"></div>
+                    </div>
+                    <div class="selected-company" id="selectedCompanyB" style="display: none; margin-top: 20px;">
+                        <div class="selected-info">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Comparing companies...</p>
+            </div>
+            
+            <button class="compare-btn" id="compareBtn" disabled>Compare Companies</button>
+            
+            <div class="comparison-results" id="comparisonResults">
+                <div class="results-header">
+                    <div class="company-header" id="companyAHeader">
+                        <img src="" class="company-logo-lg" id="companyALogo">
+                        <h2 class="company-name-lg" id="companyAName"></h2>
+                        <div class="company-symbol-lg" id="companyASymbol"></div>
+                    </div>
+                    
+                    <div class="vs-circle">VS</div>
+                    
+                    <div class="company-header" id="companyBHeader">
+                        <img src="" class="company-logo-lg" id="companyBLogo">
+                        <h2 class="company-name-lg" id="companyBName"></h2>
+                        <div class="company-symbol-lg" id="companyBSymbol"></div>
+                    </div>
+                </div>
+                
+                <div class="metrics-container" id="metricsContainer">
+                    
+                </div>
+                
+                
+                <div class="graphs-section" id="graphsSection">
+                    <h3 class="graphs-title">ESG Metrics Visualization</h3>
+                    <div class="graphs-container">
+                        <div class="graph-card">
+                            <h4 class="graph-title">ESG Scores Comparison</h4>
+                            <div class="chart-container">
+                                <canvas id="esgComparisonChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h4 class="graph-title">Component Scores Breakdown</h4>
+                            <div class="chart-container">
+                                <canvas id="componentComparisonChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h4 class="graph-title">Environmental Impact</h4>
+                            <div class="chart-container">
+                                <canvas id="environmentalChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h4 class="graph-title">Social Responsibility</h4>
+                            <div class="chart-container">
+                                <canvas id="socialChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+        <div class="leaf-decoration leaf-1">🌿</div>
+        <div class="leaf-decoration leaf-2">🍃</div>
+        <div class="leaf-decoration leaf-3">🌱</div>
+        
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <i class="fas fa-leaf"></i>
+                    <span class="footer-logo-text">EcoInvest</span>
+                </div>
+                <p>Empowering sustainable investments through transparent ESG ratings and insights for a greener future.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Compare</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> ESG Ratings</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Methodology</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Research</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Reports</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Case Studies</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Whitepapers</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQs</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to receive updates on sustainable investments and ESG insights.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address">
+                    <button type="submit" class="newsletter-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <p>By subscribing you agree to our <a href="#" style="color: #81c784;">Privacy Policy</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 EcoInvest. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Sitemap</a></p>
+        </div>
+    </footer>
+
+    <script id="company-data" type="application/json">
+        <%- JSON.stringify(data) %>
+    </script>
+    
+    <script>
+        const data = JSON.parse(document.getElementById('company-data').textContent);
+    </script>
+
+    <script>
+
+
+        
+        let esgComparisonChart = null;
+        let componentComparisonChart = null;
+        let environmentalChart = null;
+        let socialChart = null;
+
+        
+        const companyAInput = document.getElementById('companyAInput');
+        const companyBInput = document.getElementById('companyBInput');
+        const companyAResults = document.getElementById('companyAResults');
+        const companyBResults = document.getElementById('companyBResults');
+        const compareBtn = document.getElementById('compareBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const comparisonResults = document.getElementById('comparisonResults');
+        const metricsContainer = document.getElementById('metricsContainer');
+        const graphsSection = document.getElementById('graphsSection');
+        
+       
+        let selectedCompanyA = null;
+        let selectedCompanyB = null;
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setupSearch();
+            setupCompareButton();
+            setupNavbarScroll();
+            setupNewsletterForm();
+            
+        });
+
+        
+        function setupSearch() {
+            
+            companyAInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                if (searchTerm.length > 2) {
+                    const results = data.filter(company => 
+                        company.companyName.toLowerCase().includes(searchTerm) || 
+                        company.symbol.toLowerCase().includes(searchTerm)
+                    ).slice(0, 5);
+                    
+                    displaySearchResults(results, companyAResults, 'A');
+                } else {
+                    companyAResults.style.display = 'none';
+                }
+            });
+            
+            
+            companyBInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                if (searchTerm.length > 2) {
+                    const results = data.filter(company => 
+                        company.companyName.toLowerCase().includes(searchTerm) || 
+                        company.symbol.toLowerCase().includes(searchTerm)
+                    ).slice(0, 5);
+                    
+                    displaySearchResults(results, companyBResults, 'B');
+                } else {
+                    companyBResults.style.display = 'none';
+                }
+            });
+            
+            
+            document.addEventListener('click', function(e) {
+                if (!companyAInput.contains(e.target) && !companyAResults.contains(e.target)) {
+                    companyAResults.style.display = 'none';
+                }
+                if (!companyBInput.contains(e.target) && !companyBResults.contains(e.target)) {
+                    companyBResults.style.display = 'none';
+                }
+            });
+        }
+
+        
+        function displaySearchResults(results, container, companyLetter) {
+            container.innerHTML = '';
+            
+            if (results.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'search-result-item';
+                noResults.textContent = 'No companies found';
+                container.appendChild(noResults);
+            } else {
+                results.forEach(company => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.innerHTML = `
+                        <img src="${company.logo}" alt="${company.companyName}" onerror="this.src='https://via.placeholder.com/30'">
+                        <div class="company-info">
+                            <div class="company-name">${company.companyName}</div>
+                            <div class="company-symbol">${company.symbol}</div>
+                        </div>
+                    `;
+                    resultItem.addEventListener('click', function() {
+                        selectCompany(company, companyLetter);
+                        container.style.display = 'none';
+                    });
+                    container.appendChild(resultItem);
+                });
+            }
+            
+            container.style.display = 'block';
+        }
+
+        
+        function selectCompany(company, companyLetter) {
+            if (companyLetter === 'A') {
+                selectedCompanyA = company;
+                companyAInput.value = company.companyName;
+                document.getElementById('selectedCompanyA').style.display = 'block';
+                document.getElementById('selectedCompanyA').querySelector('.selected-info').innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${company.logo}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;" onerror="this.src='https://via.placeholder.com/50'">
+                        <div>
+                            <h4>${company.companyName}</h4>
+                            <div>ESG Score: <strong>${company.ESGScore.toFixed(2)}</strong> (${company.ESGRiskRating})</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                selectedCompanyB = company;
+                companyBInput.value = company.companyName;
+                document.getElementById('selectedCompanyB').style.display = 'block';
+                document.getElementById('selectedCompanyB').querySelector('.selected-info').innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <img src="${company.logo}" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;" onerror="this.src='https://via.placeholder.com/50'">
+                        <div>
+                            <h4>${company.companyName}</h4>
+                            <div>ESG Score: <strong>${company.ESGScore.toFixed(2)}</strong> (${company.ESGRiskRating})</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            
+            compareBtn.disabled = !(selectedCompanyA && selectedCompanyB);
+        }
+
+        
+        function setupCompareButton() {
+            compareBtn.addEventListener('click', function() {
+                if (selectedCompanyA && selectedCompanyB) {
+                    showLoading(true);
+                    
+                    setTimeout(() => {
+                        compareCompanies(selectedCompanyA, selectedCompanyB);
+                        showLoading(false);
+                    }, 1000);
+                }
+            });
+        }
+
+        
+        function showLoading(show) {
+            if (show) {
+                loadingSpinner.style.display = 'block';
+                comparisonResults.style.display = 'none';
+            } else {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        
+        function compareCompanies(companyA, companyB) {
+            
+            document.getElementById('companyALogo').src = companyA.logo;
+            document.getElementById('companyALogo').onerror = function() { this.src = 'https://via.placeholder.com/80'; };
+            document.getElementById('companyAName').textContent = companyA.companyName;
+            document.getElementById('companyASymbol').textContent = companyA.symbol;
+            
+            document.getElementById('companyBLogo').src = companyB.logo;
+            document.getElementById('companyBLogo').onerror = function() { this.src = 'https://via.placeholder.com/80'; };
+            document.getElementById('companyBName').textContent = companyB.companyName;
+            document.getElementById('companyBSymbol').textContent = companyB.symbol;
+            
+            
+            metricsContainer.innerHTML = '';
+            
+            
+            const metrics = [
+                {
+                    title: 'Environmental Score',
+                    icon: 'fas fa-leaf',
+                    valueA: companyA.environmentalScore,
+                    valueB: companyB.environmentalScore,
+                    higherIsBetter: true
+                },
+                {
+                    title: 'Social Score',
+                    icon: 'fas fa-users',
+                    valueA: companyA.socialScore,
+                    valueB: companyB.socialScore,
+                    higherIsBetter: true
+                },
+                {
+                    title: 'Governance Score',
+                    icon: 'fas fa-balance-scale',
+                    valueA: companyA.governanceScore,
+                    valueB: companyB.governanceScore,
+                    higherIsBetter: true
+                },
+                {
+                    title: 'Industry Rank',
+                    icon: 'fas fa-trophy',
+                    valueA: parseInt(companyA.industryRank),
+                    valueB: parseInt(companyB.industryRank),
+                    higherIsBetter: false,
+                    isRank: true
+                }
+            ];
+            
+           
+            metrics.forEach(metric => {
+                const metricCard = document.createElement('div');
+                metricCard.className = 'metric-card';
+                
+                
+                let winner = '';
+                let percentage = 50;
+                
+                if (metric.isRank) {
+                    
+                    if (metric.valueA < metric.valueB) {
+                        winner = companyA.companyName;
+                        percentage = 30;
+                    } else if (metric.valueA > metric.valueB) {
+                        winner = companyB.companyName;
+                        percentage = 70;
+                    } else {
+                        winner = 'Tie';
+                    }
+                } else {
+                    
+                    if (metric.valueA > metric.valueB) {
+                        winner = companyA.companyName;
+                        percentage = 30 + ((metric.valueA - metric.valueB) / 100 * 40);
+                    } else if (metric.valueA < metric.valueB) {
+                        winner = companyB.companyName;
+                        percentage = 70 - ((metric.valueB - metric.valueA) / 100 * 40);
+                    } else {
+                        winner = 'Tie';
+                    }
+                }
+                
+                
+                percentage = Math.max(10, Math.min(90, percentage));
+                
+                metricCard.innerHTML = `
+                    <div class="metric-title">
+                        <i class="${metric.icon}"></i>
+                        ${metric.title}
+                    </div>
+                    <div class="metric-values">
+                        <div class="metric-value">${metric.isRank ? metric.valueA : metric.valueA.toFixed(2)}</div>
+                        <div class="metric-value">${metric.isRank ? metric.valueB : metric.valueB.toFixed(2)}</div>
+                    </div>
+                    <div class="metric-bar-container">
+                        <div class="metric-bar" style="width: ${percentage}%; margin-left: ${100 - percentage}%;"></div>
+                    </div>
+                    <div class="winner">
+                        ${winner === 'Tie' ? 'Both companies are equal' : `<strong>${winner}</strong> is better`}
+                    </div>
+                `;
+                
+                metricsContainer.appendChild(metricCard);
+            });
+            
+            
+            const overallScoreCard = document.createElement('div');
+            overallScoreCard.className = 'overall-score';
+            
+            const scoreDifference = companyA.ESGScore - companyB.ESGScore;
+            let differenceText = '';
+            let differenceClass = '';
+            
+            if (scoreDifference > 0) {
+                differenceText = `${companyA.companyName} scores ${scoreDifference.toFixed(2)} points higher`;
+                differenceClass = 'higher';
+            } else if (scoreDifference < 0) {
+                differenceText = `${companyB.companyName} scores ${Math.abs(scoreDifference).toFixed(2)} points higher`;
+                differenceClass = 'lower';
+            } else {
+                differenceText = 'Both companies have the same ESG Score';
+            }
+            
+            overallScoreCard.innerHTML = `
+                <div class="score-title">Overall ESG Score Comparison</div>
+                <div style="display: flex; justify-content: center; gap: 40px;">
+                    <div>
+                        <div style="font-size: 1.2rem;">${companyA.companyName}</div>
+                        <div class="score-value">${companyA.ESGScore.toFixed(2)}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.2rem;">${companyB.companyName}</div>
+                        <div class="score-value">${companyB.ESGScore.toFixed(2)}</div>
+                    </div>
+                </div>
+                <div class="score-difference ${differenceClass}">
+                    ${differenceText}
+                </div>
+            `;
+            
+            metricsContainer.appendChild(overallScoreCard);
+            
+            
+            createCharts(companyA, companyB);
+            
+            
+            comparisonResults.style.display = 'block';
+            graphsSection.style.display = 'block';
+            
+            
+            comparisonResults.scrollIntoView({ behavior: 'smooth' });
+            
+            
+            saveComparisonToDatabase(companyA, companyB);
+        }
+
+        
+        function createCharts(companyA, companyB) {
+           
+            if (esgComparisonChart) esgComparisonChart.destroy();
+            if (componentComparisonChart) componentComparisonChart.destroy();
+            if (environmentalChart) environmentalChart.destroy();
+            if (socialChart) socialChart.destroy();
+
+            
+            const esgCtx = document.getElementById('esgComparisonChart').getContext('2d');
+            esgComparisonChart = new Chart(esgCtx, {
+                type: 'bar',
+                data: {
+                    labels: [companyA.companyName, companyB.companyName],
+                    datasets: [{
+                        label: 'ESG Score',
+                        data: [companyA.ESGScore, companyB.ESGScore],
+                        backgroundColor: [
+                            'rgba(46, 125, 50, 0.7)',
+                            'rgba(129, 199, 132, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 125, 50, 1)',
+                            'rgba(129, 199, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'ESG Score (0-100)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `ESG Score: ${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            
+            const componentCtx = document.getElementById('componentComparisonChart').getContext('2d');
+            componentComparisonChart = new Chart(componentCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Environmental', 'Social', 'Governance'],
+                    datasets: [
+                        {
+                            label: companyA.companyName,
+                            data: [companyA.environmentalScore, companyA.socialScore, companyA.governanceScore],
+                            backgroundColor: 'rgba(46, 125, 50, 0.2)',
+                            borderColor: 'rgba(46, 125, 50, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(46, 125, 50, 1)'
+                        },
+                        {
+                            label: companyB.companyName,
+                            data: [companyB.environmentalScore, companyB.socialScore, companyB.governanceScore],
+                            backgroundColor: 'rgba(129, 199, 132, 0.2)',
+                            borderColor: 'rgba(129, 199, 132, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(129, 199, 132, 1)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+            
+            const envCtx = document.getElementById('environmentalChart').getContext('2d');
+            environmentalChart = new Chart(envCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Carbon Footprint', 'Renewable Energy', 'Water Usage', 'Waste Reduction'],
+                    datasets: [
+                        {
+                            label: companyA.companyName,
+                            data: [
+                                companyA.carbonFootprint,
+                                companyA.renewableEnergy,
+                                companyA.waterUsage,
+                                companyA.wasteReduction
+                            ],
+                            backgroundColor: 'rgba(46, 125, 50, 0.7)',
+                            borderColor: 'rgba(46, 125, 50, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: companyB.companyName,
+                            data: [
+                                companyB.carbonFootprint,
+                                companyB.renewableEnergy,
+                                companyB.waterUsage,
+                                companyB.wasteReduction
+                            ],
+                            backgroundColor: 'rgba(129, 199, 132, 0.7)',
+                            borderColor: 'rgba(129, 199, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Metrics Value'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataIndex === 0) { // Carbon Footprint
+                                            label += context.parsed.y + ' metric tons CO2e';
+                                        } else if (context.dataIndex === 1) { // Renewable Energy
+                                            label += context.parsed.y + '%';
+                                        } else if (context.dataIndex === 2) { // Water Usage
+                                            label += context.parsed.y + ' million m³';
+                                        } else if (context.dataIndex === 3) { // Waste Reduction
+                                            label += context.parsed.y + '% reduction';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            
+            const socialCtx = document.getElementById('socialChart').getContext('2d');
+            socialChart = new Chart(socialCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Employee Satisfaction', 'Diversity Score', 'Community Investment', 'Board Diversity'],
+                    datasets: [
+                        {
+                            label: companyA.companyName,
+                            data: [
+                                companyA.employeeSatisfaction,
+                                companyA.diversityScore,
+                                companyA.communityInvestment,
+                                companyA.boardDiversity
+                            ],
+                            backgroundColor: 'rgba(46, 125, 50, 0.7)',
+                            borderColor: 'rgba(46, 125, 50, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: companyB.companyName,
+                            data: [
+                                companyB.employeeSatisfaction,
+                                companyB.diversityScore,
+                                companyB.communityInvestment,
+                                companyB.boardDiversity
+                            ],
+                            backgroundColor: 'rgba(129, 199, 132, 0.7)',
+                            borderColor: 'rgba(129, 199, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Score (%) / Investment ($M)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataIndex === 2) {
+                                            label += '$' + context.parsed.y + 'M';
+                                        } else {
+                                            label += context.parsed.y + '%';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        
+        function saveComparisonToDatabase(companyA, companyB) {
+            
+            const comparisonData = {
+                companyA: companyA.id,
+                companyB: companyB.id,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Comparison data to be saved:', comparisonData);
+        }
+
+        
+        function setupNavbarScroll() {
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 20) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        
+        function setupNewsletterForm() {
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('.newsletter-input');
+                    if (emailInput.value) {
+                        alert('Thank you for subscribing to our newsletter!');
+                        emailInput.value = '';
+                    }
+                });
+            }
+        }
+
+        
+        function initializeSampleData() {
+            
+            const microsoft = companies.find(c => c.id === 'msft');
+            const tesla = companies.find(c => c.id === 'tsla');
+            
+            if (microsoft && tesla) {
+                selectCompany(microsoft, 'A');
+                selectCompany(tesla, 'B');
+                
+                setTimeout(() => {
+                    compareBtn.click();
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>

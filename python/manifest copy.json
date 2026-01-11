@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "Carbon Footprint Tracker",
+  "version": "1.0",
+  "description": "Calculates the carbon footprint of products on shopping websites and suggests eco-friendly alternatives.",
+  "icons": {
+    "16": "icons/nature.png",
+    "48": "icons/nature.png",
+    "128": "icons/nature.png"
+  },
+  "author": "Avinab Singh",
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/nature.png",
+      "32": "icons/nature.png",
+      "48": "icons/nature.png",
+      "128": "icons/nature.png"
+    },
+    "default_title": "Carbon Footprint Tracker"
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["emission_factors.csv", "sustainability.js", "Sustainability_threshhold.csv", "config.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.amazon.in/*",
+        "*://*.flipkart.com/*",
+        "*://*.myntra.com/*",
+        "*://*.walmart.com/*",
+        "*://*.shopify.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}

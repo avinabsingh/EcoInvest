@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Carbon Footprint Comparison | EcoTrack</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+            background-image: url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-blend-mode: overlay;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(46, 125, 50, 0.95));
+            padding: 0 40px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            height: 80px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar.scrolled {
+            height: 70px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-search {
+            flex: 0.5;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .nav-search input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-search input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+        }
+
+        .nav-search i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4CAF50;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-left: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-cta {
+            background: #FFC107;
+            color: #333 !important;
+            padding: 10px 25px !important;
+        }
+
+        .nav-cta:hover {
+            background: #FFD54F !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .comparison-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: rgba(245, 245, 245, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #4CAF50;
+            font-size: 2.5rem;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #81C784, #4CAF50);
+            border-radius: 2px;
+        }
+
+        .comparison-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .product-selector {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+        }
+
+        .selector-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .product-letter {
+            width: 40px;
+            height: 40px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border-radius: 30px;
+            border: 2px solid #C8E6C9;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4CAF50;
+        }
+
+        .search-results {
+            position: absolute;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background: #E8F5E9;
+        }
+
+        .search-result-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: contain;
+            background: #f0f0f0;
+        }
+
+        .search-result-item .product-info {
+            flex: 1;
+        }
+
+        .search-result-item .product-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .search-result-item .product-category {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .compare-btn {
+            background: linear-gradient(135deg, #FFC107, #FFA000);
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .compare-btn:hover {
+            background: linear-gradient(135deg, #FFD54F, #FFB300);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .compare-btn:disabled {
+            background: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .comparison-results {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .product-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .product-image-lg {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border: 3px solid #C8E6C9;
+            border-radius: 10px;
+            padding: 5px;
+            background: white;
+        }
+
+        .product-name-lg {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .product-category-lg {
+            font-size: 1rem;
+            color: #4CAF50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .vs-circle {
+            width: 60px;
+            height: 60px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 20px;
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-title i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .metric-values {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            flex: 1;
+        }
+
+        .metric-bar-container {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .metric-bar {
+            height: 100%;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #81C784, #4CAF50);
+            width: 50%;
+        }
+
+        .winner {
+            color: #4CAF50;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .overall-score {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .score-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #2E7D32;
+            margin: 20px 0;
+        }
+
+        .score-difference {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .score-difference.higher {
+            color: #4CAF50;
+        }
+
+        .score-difference.lower {
+            color: #F44336;
+        }
+
+        .co2-tag {
+            background: #FF9800;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(76, 175, 80, 0.2);
+            border-radius: 50%;
+            border-top-color: #4CAF50;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Detailed Comparison Section */
+        .detailed-comparison {
+            margin-top: 40px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .detailed-comparison h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .detailed-comparison h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #4CAF50;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            margin-bottom: 15px;
+        }
+
+        .spec-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2E7D32;
+        }
+
+        .spec-values {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .spec-value {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 5px;
+            background: #F5F5F5;
+        }
+
+        .spec-value.better {
+            background: #E8F5E9;
+            font-weight: 600;
+        }
+
+        /* Graphs Section */
+        .graphs-section {
+            margin-top: 40px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .graphs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .graph-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            height: 400px;
+        }
+
+        .graph-title {
+            font-size: 1.2rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: calc(100% - 40px);
+            width: 100%;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.95), rgba(27, 94, 32, 0.95));
+            color: white;
+            padding: 60px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaf-decoration {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .leaf-1 {
+            top: 20px;
+            left: 5%;
+            transform: rotate(30deg);
+        }
+
+        .leaf-2 {
+            bottom: 40px;
+            right: 10%;
+            transform: rotate(-20deg);
+        }
+
+        .leaf-3 {
+            top: 50%;
+            left: 7%;
+            transform: rotate(45deg);
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-about {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .footer-logo i {
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-weight: 700;
+        }
+
+        .footer-about p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            flex: 0 0 200px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #81C784;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .footer-newsletter {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 30px;
+        }
+
+        .footer-newsletter h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-newsletter h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #81C784;
+        }
+
+        .footer-newsletter p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background: #81C784;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background: #66BB6A;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.9rem;
+            color: #bdbdbd;
+        }
+
+        .footer-bottom a {
+            color: #81C784;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .footer-container {
+                flex-direction: column;
+            }
+            
+            .footer-about, .footer-links, .footer-newsletter {
+                padding-right: 0;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .graphs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                flex-direction: column;
+                height: auto;
+                padding: 15px 20px;
+            }
+            
+            .navbar-brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-search {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .navbar-nav {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .nav-item {
+                margin: 5px 0;
+            }
+            
+            .nav-link {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .comparison-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .product-selector {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .vs-circle {
+                margin: 20px 0;
+            }
+            
+            .main-content {
+                margin-top: 120px;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .graph-card {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .comparison-container {
+                padding: 25px;
+            }
+            
+            .metric-card {
+                padding: 20px;
+            }
+            
+            .footer-links {
+                flex: 0 0 100%;
+            }
+            
+            .score-value {
+                font-size: 2.5rem;
+            }
+            
+            .graph-card {
+                min-width: 100%;
+                height: 250px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-brand">
+            <i class="fas fa-leaf"></i>
+            EcoTrack
+        </a>
+
+        <div class="nav-search">
+            <input type="search" id="search" placeholder="Search products...">
+            <i class="fas fa-search"></i>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-balance-scale"></i> Compare
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i> Insights
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link nav-cta">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="comparison-container">
+            <h1 class="page-title">Product Carbon Footprint Comparison</h1>
+            
+            <div class="comparison-form">
+                <div class="product-selector">
+                    <div class="selector-header">
+                        <div class="product-letter">A</div>
+                        <h3>First Product</h3>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="productAInput" placeholder="Search for a product...">
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-results" id="productAResults"></div>
+                    </div>
+                    <div class="selected-product" id="selectedProductA" style="display: none; margin-top: 20px;">
+                        <div class="selected-info">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-selector">
+                    <div class="selector-header">
+                        <div class="product-letter">B</div>
+                        <h3>Second Product</h3>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" class="search-input" id="productBInput" placeholder="Search for a product...">
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-results" id="productBResults"></div>
+                    </div>
+                    <div class="selected-product" id="selectedProductB" style="display: none; margin-top: 20px;">
+                        <div class="selected-info">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Comparing products...</p>
+            </div>
+            
+            <button class="compare-btn" id="compareBtn" disabled>Compare Products</button>
+            
+            <div class="comparison-results" id="comparisonResults">
+                <div class="results-header">
+                    <div class="product-header" id="productAHeader">
+                        <img src="" class="product-image-lg" id="productAImage">
+                        <h2 class="product-name-lg" id="productAName"></h2>
+                        <div class="product-category-lg" id="productACategory"></div>
+                        <div class="co2-tag" id="productACO2"></div>
+                    </div>
+                    
+                    <div class="vs-circle">VS</div>
+                    
+                    <div class="product-header" id="productBHeader">
+                        <img src="" class="product-image-lg" id="productBImage">
+                        <h2 class="product-name-lg" id="productBName"></h2>
+                        <div class="product-category-lg" id="productBCategory"></div>
+                        <div class="co2-tag" id="productBCO2"></div>
+                    </div>
+                </div>
+                
+                <div class="metrics-container" id="metricsContainer">
+                </div>
+                
+                <div class="graphs-section" id="graphsSection">
+                    <h2><i class="fas fa-chart-bar"></i> Carbon Footprint Visualization</h2>
+                    <div class="graphs-container">
+                        <div class="graph-card">
+                            <h3 class="graph-title">CO2e Comparison</h3>
+                            <div class="chart-container">
+                                <canvas id="co2ComparisonChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h3 class="graph-title">Constituent Gases Breakdown</h3>
+                            <div class="chart-container">
+                                <canvas id="gasesChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h3 class="graph-title">Emission Factor Details</h3>
+                            <div class="chart-container">
+                                <canvas id="emissionChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h3 class="graph-title">Activity Data Comparison</h3>
+                            <div class="chart-container">
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detailed-comparison" id="detailedComparison">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+        <div class="leaf-decoration leaf-1">🌿</div>
+        <div class="leaf-decoration leaf-2">🍃</div>
+        <div class="leaf-decoration leaf-3">🌱</div>
+        
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <i class="fas fa-leaf"></i>
+                    <span class="footer-logo-text">EcoTrack</span>
+                </div>
+                <p>Helping consumers make informed decisions by comparing the carbon footprint of everyday products.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Compare</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Carbon Calculator</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Methodology</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Research</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Food & Beverages</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Household Items</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Clothing</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Electronics</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Personal Care</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to receive updates on sustainable products and carbon reduction tips.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address">
+                    <button type="submit" class="newsletter-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <p>By subscribing you agree to our <a href="#" style="color: #81C784;">Privacy Policy</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 EcoTrack. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Sitemap</a></p>
+        </div>
+    </footer>
+
+    <script id="product-data" type="application/json">
+        [{"emission_factor":{"activity_id":"consumer_goods-type_broom_brush_and_mop","id":"777b541c-b086-4fb5-9873-db412ead1813","source":"EPA","source_dataset":"Supply Chain Greenhouse Gas Emission Factors v1.2","year":2019,"category":"Furnishings and Household","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":112.5,"co2e_other":2.005,"co2":98},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346ca","name":"Broom","image":"https://www.homenish.com/wp-content/uploads/2021/06/Old-Fashioned-Broom.jpg","co2e":112.5,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_cotton_t_shirt","id":"9243f9ae-f08d-4a6b-9ff0-07fb91898ae4","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Clothing and Footwear","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":12.72,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"tonne"},"_id":"67f13848570635f2ddf346d2","name":"T-shirt","image":"https://cdn.pixabay.com/photo/2024/02/06/18/10/ai-generated-8557635_1280.jpg","co2e":12.72,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"electrical_equipment-type_electric_lamp_bulb_and_part","id":"generated-id-placeholder","source":"EPA","source_dataset":"EPA Database","year":2019,"category":"Electrical Equipment","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":217.5,"co2e_other":null,"co2":null},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346e2","name":"Lamp","image":"https://th.bing.com/th/id/OIP.c7g03By6F_gpFkPeFhUebQHaJc?rs=1&pid=ImgDetMain","co2e":217.5,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_soap_and_perfumes","id":"d82986ef-d6ce-46db-aa1f-34d4fb1d2735","source":"Market Economics Limited","source_dataset":"Consumption emissions modelling - Cons EF 199 SUT","year":2019,"category":"Personal Care and Accessories","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":0.2324,"co2e_other":null,"co2":null},"activity_data":{"activity_value":759.2,"activity_unit":"nzd"},"_id":"67f13848570635f2ddf346d4","name":"Soap","image":"https://th.bing.com/th/id/OIP.jGceIuC5wCPurM4IpD_KEgHaEK?rs=1&pid=ImgDetMain","co2e":0.2324,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_toothpaste","id":"655490df-5f83-4e68-89c9-96538e13a80b","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Personal Care and Accessories","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":17600,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"tonne"},"_id":"67f13848570635f2ddf346da","name":"Toothpaste","image":"https://tse3.mm.bing.net/th?id=OIP.JASD83z-PcMwnoHM9wKF5wHaHa&pid=Api&P=0&h=180","co2e":17600,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_broom_brush_and_mop","id":"777b541c-b086-4fb5-9873-db412ead1813","source":"EPA","source_dataset":"Supply Chain Greenhouse Gas Emission Factors v1.2","year":2019,"category":"Furnishings and Household","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":112.5,"co2e_other":2.005,"co2":98},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346cb","name":"Mop","image":"https://th.bing.com/th/id/OIP.J-OG_eIV6me9v2jtlW_EqgHaHa?rs=1&pid=ImgDetMain","co2e":112.5,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_coffee","id":"82030468-4150-4e67-9d39-24e7907e8ee9","source":"Market Economics Limited","source_dataset":"Consumption emissions modelling - Cons EF 247 NZHES","year":2019,"category":"Food/Beverages/Tobacco","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":237.9,"co2e_other":null,"co2":null},"activity_data":{"activity_value":759.2,"activity_unit":"nzd"},"_id":"67f13848570635f2ddf346cd","name":"Coffee","image":"https://wallpaperaccess.com/full/1076692.jpg","co2e":237.9,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_broom_brush_and_mop","id":"777b541c-b086-4fb5-9873-db412ead1813","source":"EPA","source_dataset":"Supply Chain Greenhouse Gas Emission Factors v1.2","year":2019,"category":"Furnishings and Household","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":112.5,"co2e_other":2.005,"co2":98},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346cc","name":"Brush","image":"https://th.bing.com/th/id/OIP.8VK_8s6bjVr0W-BFOQ8erwHaJ_?rs=1&pid=ImgDetMain","co2e":112.5,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"arable_farming-type_apple_orchards","id":"1abff49b-26e7-42d0-8de7-e86b7992dd04","source":"EPA","source_dataset":"Supply Chain Greenhouse Gas Emission Factors v1.2","year":2019,"category":"Arable Farming","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":250,"co2e_other":1.237,"co2":130.5},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346d6","name":"Apple","image":"https://th.bing.com/th/id/OIP.-gLJWKbyCRXzK3kLaf_FEAHaE8?rs=1&pid=ImgDetMain","co2e":250,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_detergent","id":"3f00d4a7-dfdb-4bc7-99af-18215d8508ca","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Furnishings and Household","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":116800,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"tonne"},"_id":"67f13848570635f2ddf346d9","name":"Detergent","image":"https://i5.walmartimages.com/asr/82c9f07e-98b2-4523-9748-88735a00eaa7_1.395f7651f26bce2e6d4d5005e43e914b.jpeg?odnWidth=1000&odnHeight=1000&odnBg=ffffff","co2e":116800,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_decorative_paint","id":"c0406557-0038-4a2e-9b29-077a88570b58","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Furnishings and Household","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":26400,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"tonne"},"_id":"67f13848570635f2ddf346dc","name":"Paint","image":"https://tse4.mm.bing.net/th?id=OIP.VOSgBH6gGroZDBeOVz9J4wHaDt&pid=Api&P=0&h=180","co2e":26400,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_jeans","id":"147b4f82-7cae-4eb1-9b94-13f90196726f","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Clothing and Footwear","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":16.42,"co2e_other":null,"co2":null},"activity_data":{"activity_value":1,"activity_unit":"number"},"_id":"67f13848570635f2ddf346d3","name":"Jeans","image":"https://th.bing.com/th/id/OIP.sNg09CJbpQ5oqnaTK1jjHgHaMJ?rs=1&pid=ImgDetMain","co2e":16.42,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_shampoo","id":"686a8afd-23b8-4d56-add4-b93b77dcd066","source":"Shiseido","source_dataset":"Environmental Data","year":2021,"category":"Personal Care and Accessories","source_lca_activity":"cradle_to_grave"},"constituent_gases":{"co2e_total":390,"co2e_other":null,"co2":null},"activity_data":{"activity_value":15000,"activity_unit":"ml"},"_id":"67f13848570635f2ddf346d7","name":"Shampoo","image":"https://i5.walmartimages.com/asr/6b71d05c-23e3-4f3a-9eff-09002563086b_1.ef47bb922f9a53465ed49326cc8e6936.jpeg","co2e":390,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"electrical_equipment-type_batteries_and_battery_chargers","id":"9bc2b515-3732-4125-889c-004393b45306","source":"OpenIO-Canada","source_dataset":"OpenIO v2.9","year":2020,"category":"Electrical Equipment","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":266.1,"co2e_other":7.976,"co2":211.2},"activity_data":{"activity_value":672.1,"activity_unit":"cad"},"_id":"67f13848570635f2ddf346de","name":"Batteries","image":"https://th.bing.com/th/id/R.af6944fa296d449258a0d8f4f895d527?rik=SNjS1NpbLCErgg&riu=http%3a%2f%2fres.freestockphotos.biz%2fpictures%2f17%2f17124-illustration-of-a-battery-pv.png&ehk=uPOvk9skmZ2ee9O6bKzhl8XqHyMglQ3HABFhxjnIVsU%3d&risl=&pid=ImgRaw&r=0","co2e":266.1,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_tea","id":"60ca8041-bd0e-4f60-9dc5-0f13ce7b244c","source":"Market Economics Limited","source_dataset":"Consumption emissions modelling - Cons EF 247 NZHES","year":2019,"category":"Food/Beverages/Tobacco","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":237.9,"co2e_other":null,"co2":null},"activity_data":{"activity_value":759.2,"activity_unit":"nzd"},"_id":"67f13848570635f2ddf346ce","name":"Tea","image":"https://th.bing.com/th/id/OIP.siZDs0UKbOHYkPwUnEHlkgHaFd?rs=1&pid=ImgDetMain","co2e":237.9,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_meat_and_offal","id":"7af4fc6a-b5e9-4160-9b62-9db66ea7a360","source":"Market Economics Limited","source_dataset":"Consumption emissions modelling - Cons EF 199 SUT","year":2019,"category":"Food/Beverages/Tobacco","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":1116,"co2e_other":null,"co2":null},"activity_data":{"activity_value":759.2,"activity_unit":"nzd"},"_id":"67f13848570635f2ddf346db","name":"Meat","image":"https://facts.net/wp-content/uploads/2022/06/different-types-of-meat.jpg","co2e":1116,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_cotton_polo_shirt","id":"7160e6f6-8169-4563-96e0-183f4ec1d1eb","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Clothing and Footwear","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":14.35,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"tonne"},"_id":"67f13848570635f2ddf346d1","name":"Shirt","image":"https://th.bing.com/th/id/R.19977682d88170b37032e7421e4b1656?rik=Dv7pQNMvYVH6CA&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fshirt-png-hd-dress-shirt-png-image-dress-shirt-png-914.png&ehk=n8JoHBJIDOiOJwR9fAHFdGztHWIcTsZ3QjrTbwparoY%3d&risl=&pid=ImgRaw&r=0","co2e":14.35,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"agriculture_fishing_forestry-type_fish_all_species-origin_region_multi_region","id":"some-id-value","source":"WRAP","source_dataset":"some-dataset","year":2015,"category":"Agriculture, Fishing & Forestry","source_lca_activity":"cradle_to_processing_gate"},"constituent_gases":{"co2e_total":62240,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"t"},"_id":"67f13848570635f2ddf346dd","name":"Fish","image":"https://th.bing.com/th/id/OIP.sHUp_AhPIJTYGuUJFuy-GgHaEW?rs=1&pid=ImgDetMain","co2e":62240,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_cheese","id":"55d898ec-f850-45c3-8b4a-88d381813fd4","source":"GEMIS","source_dataset":"GEMIS model and database v5.0","year":2015,"category":"Food/Beverages/Tobacco","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":654560,"co2e_other":null,"co2":164000},"activity_data":{"activity_value":80000,"activity_unit":"kg"},"_id":"67f13848570635f2ddf346d0","name":"Cheese","image":"https://th.bing.com/th/id/OIP.z8fA0Zm7wKslL2GUrINlEAHaE8?rs=1&pid=ImgDetMain","co2e":654560,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_metallic_kettle","id":"ce47cfa9-f01a-4988-ac9e-156ad5145403","source":"CAEP","source_dataset":"China Products Carbon Footprint Factors Database","year":2022,"category":"Furnishings and Household","source_lca_activity":"cradle_to_gate"},"constituent_gases":{"co2e_total":10,"co2e_other":null,"co2":null},"activity_data":{"activity_value":1,"activity_unit":"number"},"_id":"67f13848570635f2ddf346d8","name":"Kettle","image":"https://th.bing.com/th/id/R.21d225d6c45d403d05bd895f2b3ef5d3?rik=flOS6OYM%2f%2fZRPg&riu=http%3a%2f%2fpngimg.com%2fuploads%2fkettle%2fkettle_PNG8703.png&ehk=c1Xufg2khrB%2b9WSzN%2bxaMXfXx15kDVtVeXl4Cevuke0%3d&risl=&pid=ImgRaw&r=0","co2e":10,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_soap_and_perfumes","id":"d82986ef-d6ce-46db-aa1f-34d4fb1d2735","source":"Market Economics Limited","source_dataset":"Consumption emissions modelling - Cons EF 199 SUT","year":2019,"category":"Personal Care and Accessories","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":0.2324,"co2e_other":null,"co2":null},"activity_data":{"activity_value":759.2,"activity_unit":"nzd"},"_id":"67f13848570635f2ddf346d5","name":"Perfume","image":"https://th.bing.com/th/id/OIP.Q0Erg2UKl6G7hNq-xrqtJQHaFj?rs=1&pid=ImgDetMain","co2e":0.2324,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_soft_drink","id":"792d3133-06f9-4913-ad99-5127afdaf8e8","source":"EPA","source_dataset":"Supply Chain Greenhouse Gas Emission Factors v1.2","year":2019,"category":"Food/Beverages/Tobacco","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":189,"co2e_other":6.16,"co2":147},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346e0","name":"Drink","image":"https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260","co2e":189,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_noodles","id":"7b236c1c-f767-4980-88d2-8816f13448b8","source":"Market Economics Limited","source_dataset":"Consumption emissions modelling - Cons EF 199 SUT","year":2019,"category":"Food/Beverages/Tobacco","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":237.9,"co2e_other":null,"co2":null},"activity_data":{"activity_value":759.2,"activity_unit":"nzd"},"_id":"67f13848570635f2ddf346e1","name":"Noodles","image":"https://th.bing.com/th/id/OIP.C3Ep0grJrP7VQASs-3ocnwHaFY?rs=1&pid=ImgDetMain","co2e":237.9,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"electrical_equipment-type_electric_lamp_bulb_and_part","id":"generated-id-placeholder","source":"EPA","source_dataset":"EPA Database","year":2019,"category":"Electrical Equipment","source_lca_activity":"cradle_to_shelf"},"constituent_gases":{"co2e_total":217.5,"co2e_other":null,"co2":null},"activity_data":{"activity_value":500,"activity_unit":"usd"},"_id":"67f13848570635f2ddf346e3","name":"Bulb","image":"https://purepng.com/public/uploads/large/purepng.com-glowing-yellow-light-bulbelectronicsbulb-light-941524679911ixxqy.png","co2e":217.5,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"arable_farming-type_oil_seeds","id":"e358dbf6-944b-41fe-a611-be7f1913ca64","source":"EXIOBASE","source_dataset":"EXIOBASE 3","year":2019,"category":"Arable Farming","source_lca_activity":"unknown"},"constituent_gases":{"co2e_total":579.6,"co2e_other":null,"co2":null},"activity_data":{"activity_value":447,"activity_unit":"eur"},"_id":"67f13848570635f2ddf346df","name":"Oil","image":"https://th.bing.com/th/id/OIP.sb3pBDMOvV8dcuG-leFoVwHaEK?rs=1&pid=ImgDetMain","co2e":579.6,"co2e_unit":"kg","__v":0},{"emission_factor":{"activity_id":"livestock_farming-type_milk-origin_region_world_average","id":"d3856a75-ea9c-475f-af42-7cda576d7f7e","source":"WRAP","source_dataset":"Emissions Factor Database for Scope 3 Measurement and Reporting v1.2","year":2015,"category":"Agriculture/Hunting/Forestry/Fishing","source_lca_activity":"cradle_to_processing_gate"},"constituent_gases":{"co2e_total":1.39,"co2e_other":null,"co2":null},"activity_data":{"activity_value":1,"activity_unit":"l"},"_id":"67f13848570635f2ddf346cf","name":"Milk","image":"https://th.bing.com/th/id/OIP.K8CvAVsmbT6ALRQEkEA2CgHaHa?rs=1&pid=ImgDetMain","co2e":1.39,"co2e_unit":"kg/l","__v":0},{"emission_factor":{"activity_id":"consumer_goods-type_potatoes_chips-origin_region_uk","id":"generated-id-placeholder","source":"WRAP","source_dataset":"WRAP Database","year":2019,"category":"Food/Beverages/Tobacco","source_lca_activity":"cradle_to_farm_gate"},"constituent_gases":{"co2e_total":1234.5,"co2e_other":null,"co2":null},"activity_data":{"activity_value":80,"activity_unit":"t"},"_id":"67f13848570635f2ddf346e4","name":"Chips","image":"https://th.bing.com/th/id/OIP.2dlzNdEgvWWwJ-QsGFNImgHaE8?rs=1&pid=ImgDetMain","co2e":1234.5,"co2e_unit":"kg","__v":0}]
+    </script>
+    
+    <script>
+        const productData = JSON.parse(document.getElementById('product-data').textContent);
+    </script>
+
+    <script>
+        
+
+        // DOM Elements
+        const productAInput = document.getElementById('productAInput');
+        const productBInput = document.getElementById('productBInput');
+        const productAResults = document.getElementById('productAResults');
+        const productBResults = document.getElementById('productBResults');
+        const compareBtn = document.getElementById('compareBtn');
+        const comparisonResults = document.getElementById('comparisonResults');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const metricsContainer = document.getElementById('metricsContainer');
+        const detailedComparison = document.getElementById('detailedComparison');
+        const graphsSection = document.getElementById('graphsSection');
+
+        // Selected products
+        let selectedProductA = null;
+        let selectedProductB = null;
+
+        // Event Listeners
+        productAInput.addEventListener('input', () => handleSearch(productAInput, productAResults, 'A'));
+        productBInput.addEventListener('input', () => handleSearch(productBInput, productBResults, 'B'));
+        compareBtn.addEventListener('click', compareProducts);
+
+        // Handle product search
+        function handleSearch(inputElement, resultsContainer, productSide) {
+            const searchTerm = inputElement.value.toLowerCase();
+            if (searchTerm.length < 2) {
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            const filteredProducts = productData.filter(product => 
+                product.name.toLowerCase().includes(searchTerm)
+                || product.emission_factor.category.toLowerCase().includes(searchTerm));
+
+            displaySearchResults(filteredProducts, resultsContainer, productSide);
+        }
+
+        // Display search results
+        function displaySearchResults(products, container, productSide) {
+            container.innerHTML = '';
+            
+            if (products.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'search-result-item';
+                noResults.textContent = 'No products found';
+                container.appendChild(noResults);
+            } else {
+                products.forEach(product => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-category">${product.emission_factor.category}</div>
+                        </div>
+                    `;
+                    resultItem.addEventListener('click', () => selectProduct(product, productSide));
+                    container.appendChild(resultItem);
+                });
+            }
+            
+            container.style.display = 'block';
+        }
+
+        // Select a product
+        function selectProduct(product, side) {
+            if (side === 'A') {
+                selectedProductA = product;
+                productAInput.value = product.name;
+                productAResults.style.display = 'none';
+            } else {
+                selectedProductB = product;
+                productBInput.value = product.name;
+                productBResults.style.display = 'none';
+            }
+            
+            // Enable compare button if both products are selected
+            if (selectedProductA && selectedProductB) {
+                compareBtn.disabled = false;
+            }
+        }
+
+        // Compare selected products
+        function compareProducts() {
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+            comparisonResults.style.display = 'none';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                displayComparisonResults();
+                loadingSpinner.style.display = 'none';
+                comparisonResults.style.display = 'block';
+                
+                // Scroll to results
+                comparisonResults.scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+
+        // Display comparison results
+        function displayComparisonResults() {
+            // Update product headers
+            document.getElementById('productAImage').src = selectedProductA.image;
+            document.getElementById('productAName').textContent = selectedProductA.name;
+            document.getElementById('productACategory').textContent = selectedProductA.emission_factor.category;
+            document.getElementById('productACO2').textContent = `${selectedProductA.co2e} ${selectedProductA.co2e_unit} CO₂e`;
+            
+            document.getElementById('productBImage').src = selectedProductB.image;
+            document.getElementById('productBName').textContent = selectedProductB.name;
+            document.getElementById('productBCategory').textContent = selectedProductB.emission_factor.category;
+            document.getElementById('productBCO2').textContent = `${selectedProductB.co2e} ${selectedProductB.co2e_unit} CO₂e`;
+            
+            // Generate metrics
+            generateMetrics();
+            
+            // Generate detailed comparison
+            generateDetailedComparison();
+            
+            // Generate charts
+            generateCharts();
+        }
+
+        // Generate comparison metrics
+        function generateMetrics() {
+            metricsContainer.innerHTML = '';
+            
+            // CO2e Comparison
+            const co2eDiff = selectedProductA.co2e - selectedProductB.co2e;
+            const co2ePercentDiff = ((Math.abs(co2eDiff) / Math.max(selectedProductA.co2e, selectedProductB.co2e)) * 100);
+            const co2eWinner = co2eDiff < 0 ? selectedProductA.name : selectedProductB.name;
+            
+            metricsContainer.appendChild(createMetricCard(
+                'Carbon Footprint',
+                'fas fa-smog',
+                selectedProductA.co2e,
+                selectedProductB.co2e,
+                selectedProductA.co2e_unit,
+                co2eWinner,
+                co2ePercentDiff,
+                co2eDiff < 0
+            ));
+            
+            // Price Comparison (using activity data as proxy)
+            const priceDiff = selectedProductA.activity_data.activity_value - selectedProductB.activity_data.activity_value;
+            const pricePercentDiff = ((Math.abs(priceDiff) / Math.max(selectedProductA.activity_data.activity_value, selectedProductB.activity_data.activity_value)) * 100);
+            const priceWinner = priceDiff < 0 ? selectedProductA.name : selectedProductB.name;
+            
+            metricsContainer.appendChild(createMetricCard(
+                'Price',
+                'fas fa-tag',
+                selectedProductA.activity_data.activity_value,
+                selectedProductB.activity_data.activity_value,
+                selectedProductA.activity_data.activity_unit,
+                priceWinner,
+                pricePercentDiff,
+                priceDiff < 0
+            ));
+            
+            // Overall Score
+            const overallScore = calculateOverallScore();
+            const overallCard = document.createElement('div');
+            overallCard.className = 'overall-score';
+            overallCard.innerHTML = `
+                <h3 class="score-title">Overall Sustainability Score</h3>
+                <div class="score-value">${overallScore.score}</div>
+                <p class="score-difference ${overallScore.difference > 0 ? 'higher' : 'lower'}">
+                    ${overallScore.winner} is ${Math.abs(overallScore.difference)}% ${overallScore.difference > 0 ? 'better' : 'worse'}
+                </p>
+                <p>Based on carbon footprint and price comparison</p>
+            `;
+            metricsContainer.appendChild(overallCard);
+        }
+
+        // Create a metric card
+        function createMetricCard(title, icon, valueA, valueB, unit, winner, percentDiff, isABetter) {
+            const card = document.createElement('div');
+            card.className = 'metric-card';
+            
+            const higherValue = Math.max(valueA, valueB);
+            const barWidthA = (valueA / higherValue) * 100;
+            const barWidthB = (valueB / higherValue) * 100;
+            
+            card.innerHTML = `
+                <div class="metric-title">
+                    <i class="${icon}"></i> ${title}
+                </div>
+                <div class="metric-values">
+                    <div class="metric-value">${valueA.toFixed(2)} ${unit}</div>
+                    <div class="metric-value">${valueB.toFixed(2)} ${unit}</div>
+                </div>
+                <div class="metric-bar-container">
+                    <div class="metric-bar" style="width: ${barWidthA}%; background: ${isABetter ? '#4CAF50' : '#F44336'};"></div>
+                    <div class="metric-bar" style="width: ${barWidthB}%; background: ${!isABetter ? '#4CAF50' : '#F44336'}; margin-left: ${barWidthA}%;"></div>
+                </div>
+                <div class="winner">
+                    <i class="fas fa-trophy"></i> ${winner} is ${percentDiff.toFixed(1)}% better
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Calculate overall score
+        function calculateOverallScore() {
+            // Simple scoring algorithm - can be enhanced
+            const co2eWeight = 0.7; // More weight to carbon footprint
+            const priceWeight = 0.3;
+            
+            // Normalize values (lower is better for both metrics)
+            const normalizedCo2eA = 1 - (selectedProductA.co2e / (selectedProductA.co2e + selectedProductB.co2e));
+            const normalizedCo2eB = 1 - (selectedProductB.co2e / (selectedProductA.co2e + selectedProductB.co2e));
+            
+            const normalizedPriceA = 1 - (selectedProductA.activity_data.activity_value / 
+                (selectedProductA.activity_data.activity_value + selectedProductB.activity_data.activity_value));
+            const normalizedPriceB = 1 - (selectedProductB.activity_data.activity_value / 
+                (selectedProductA.activity_data.activity_value + selectedProductB.activity_data.activity_value));
+            
+            // Calculate scores
+            const scoreA = (normalizedCo2eA * co2eWeight + normalizedPriceA * priceWeight) * 100;
+            const scoreB = (normalizedCo2eB * co2eWeight + normalizedPriceB * priceWeight) * 100;
+            
+            return {
+                score: scoreA > scoreB ? scoreA.toFixed(1) : scoreB.toFixed(1),
+                winner: scoreA > scoreB ? selectedProductA.name : selectedProductB.name,
+                difference: Math.abs(scoreA - scoreB)
+            };
+        }
+
+        // Generate detailed comparison
+        function generateDetailedComparison() {
+            detailedComparison.innerHTML = `
+                <h2><i class="fas fa-info-circle"></i> Detailed Comparison</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-title">Product Category</div>
+                        <div class="spec-values">
+                            <div class="spec-value">${selectedProductA.emission_factor.category}</div>
+                            <div class="spec-value">${selectedProductB.emission_factor.category}</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">Data Source</div>
+                        <div class="spec-values">
+                            <div class="spec-value">${selectedProductA.emission_factor.source}</div>
+                            <div class="spec-value">${selectedProductB.emission_factor.source}</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">LCA Scope</div>
+                        <div class="spec-values">
+                            <div class="spec-value">${formatLcaScope(selectedProductA.emission_factor.source_lca_activity)}</div>
+                            <div class="spec-value">${formatLcaScope(selectedProductB.emission_factor.source_lca_activity)}</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">CO2 Emissions</div>
+                        <div class="spec-values">
+                            <div class="spec-value ${selectedProductA.constituent_gases.co2 < selectedProductB.constituent_gases.co2 ? 'better' : ''}">
+                                ${selectedProductA.constituent_gases.co2 ? selectedProductA.constituent_gases.co2.toFixed(2) + ' kg' : 'N/A'}
+                            </div>
+                            <div class="spec-value ${selectedProductB.constituent_gases.co2 < selectedProductA.constituent_gases.co2 ? 'better' : ''}">
+                                ${selectedProductB.constituent_gases.co2 ? selectedProductB.constituent_gases.co2.toFixed(2) + ' kg' : 'N/A'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">Other GHGs (CO2e)</div>
+                        <div class="spec-values">
+                            <div class="spec-value ${selectedProductA.constituent_gases.co2e_other < selectedProductB.constituent_gases.co2e_other ? 'better' : ''}">
+                                ${selectedProductA.constituent_gases.co2e_other ? selectedProductA.constituent_gases.co2e_other.toFixed(2) + ' kg' : 'N/A'}
+                            </div>
+                            <div class="spec-value ${selectedProductB.constituent_gases.co2e_other < selectedProductA.constituent_gases.co2e_other ? 'better' : ''}">
+                                ${selectedProductB.constituent_gases.co2e_other ? selectedProductB.constituent_gases.co2e_other.toFixed(2) + ' kg' : 'N/A'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-title">Price per Unit</div>
+                        <div class="spec-values">
+                            <div class="spec-value ${selectedProductA.activity_data.activity_value < selectedProductB.activity_data.activity_value ? 'better' : ''}">
+                                ${selectedProductA.activity_data.activity_value} ${selectedProductA.activity_data.activity_unit}
+                            </div>
+                            <div class="spec-value ${selectedProductB.activity_data.activity_value < selectedProductA.activity_data.activity_value ? 'better' : ''}">
+                                ${selectedProductB.activity_data.activity_value} ${selectedProductB.activity_data.activity_unit}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Format LCA scope for display
+        function formatLcaScope(scope) {
+            const scopeMap = {
+                'cradle_to_gate': 'Cradle to Gate',
+                'farm_to_retail': 'Farm to Retail',
+                'well_to_wheel': 'Well to Wheel',
+                'cradle_to_grave': 'Cradle to Grave'
+            };
+            return scopeMap[scope] || scope;
+        }
+
+        // Generate charts
+        function generateCharts() {
+            // CO2 Comparison Chart
+            const co2Ctx = document.getElementById('co2ComparisonChart').getContext('2d');
+            new Chart(co2Ctx, {
+                type: 'bar',
+                data: {
+                    labels: [selectedProductA.name, selectedProductB.name],
+                    datasets: [{
+                        label: 'CO2e Emissions',
+                        data: [selectedProductA.co2e, selectedProductB.co2e],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.7)',
+                            'rgba(244, 67, 54, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(76, 175, 80, 1)',
+                            'rgba(244, 67, 54, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'kg CO2e'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Total Carbon Footprint Comparison'
+                        }
+                    }
+                }
+            });
+            
+            // Gases Breakdown Chart
+            const gasesCtx = document.getElementById('gasesChart').getContext('2d');
+            
+            // Prepare gases data
+            const gasesLabels = [];
+            const gasesA = [];
+            const gasesB = [];
+            
+            // Collect all unique gases from both products
+            const allGases = new Set();
+            if (selectedProductA.constituent_gases) {
+                Object.keys(selectedProductA.constituent_gases).forEach(gas => allGases.add(gas));
+            }
+            if (selectedProductB.constituent_gases) {
+                Object.keys(selectedProductB.constituent_gases).forEach(gas => allGases.add(gas));
+            }
+            
+            // Populate data arrays
+            allGases.forEach(gas => {
+                gasesLabels.push(gas.toUpperCase());
+                gasesA.push(selectedProductA.constituent_gases[gas] || 0);
+                gasesB.push(selectedProductB.constituent_gases[gas] || 0);
+            });
+            
+            new Chart(gasesCtx, {
+                type: 'radar',
+                data: {
+                    labels: gasesLabels,
+                    datasets: [
+                        {
+                            label: selectedProductA.name,
+                            data: gasesA,
+                            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                            borderColor: 'rgba(76, 175, 80, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(76, 175, 80, 1)'
+                        },
+                        {
+                            label: selectedProductB.name,
+                            data: gasesB,
+                            backgroundColor: 'rgba(244, 67, 54, 0.2)',
+                            borderColor: 'rgba(244, 67, 54, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(244, 67, 54, 1)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Greenhouse Gas Composition'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Emission Factor Chart
+            const emissionCtx = document.getElementById('emissionChart').getContext('2d');
+            new Chart(emissionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['CO2', 'Other GHGs'],
+                    datasets: [
+                        {
+                            label: selectedProductA.name,
+                            data: [
+                                selectedProductA.constituent_gases.co2 || 0,
+                                selectedProductA.constituent_gases.co2e_other || 0
+                            ],
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.7)',
+                                'rgba(255, 206, 86, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `${selectedProductA.name} Emission Composition`
+                        }
+                    }
+                }
+            });
+            
+            // Activity Data Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            new Chart(activityCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Price per Unit', 'Carbon per Unit'],
+                    datasets: [{
+                        data: [
+                            selectedProductB.activity_data.activity_value,
+                            selectedProductB.co2e
+                        ],
+                        backgroundColor: [
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `${selectedProductB.name} Price vs Carbon`
+                        }
+                    }
+                }
+            });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-container')) {
+                productAResults.style.display = 'none';
+                productBResults.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

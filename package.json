@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "EcoInvest",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avinabsingh/EcoInvest.git"
+  },
+  "author": "Avinab Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avinabsingh/EcoInvest/issues"
+  },
+  "homepage": "https://github.com/avinabsingh/EcoInvest#readme",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
+    "express-sessions": "^1.0.6",
+    "groq-sdk": "^0.37.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.21.0",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^8.0.0"
+  }
+}

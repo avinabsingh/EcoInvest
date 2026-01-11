@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Pathway | ESG Companies</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f7f4;
+            color: #2d3a3a;
+            overflow-x: hidden;
+            background-image: url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-blend-mode: overlay;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.95), rgba(39, 107, 43, 0.95));
+            padding: 0 40px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+            height: 80px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar.scrolled {
+            height: 70px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: 1.2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-brand i {
+            margin-right: 12px;
+            font-size: 30px;
+            color: #d4edda;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover i {
+            transform: rotate(-15deg);
+            color: #fff;
+        }
+
+        .nav-search {
+            position: relative;
+            margin: 0 30px;
+            flex-grow: 1;
+            max-width: 500px;
+        }
+
+        #search {
+            height: 46px;
+            width: 100%;
+            padding: 0 20px 0 50px;
+            border-radius: 25px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            color: #2d3a3a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #search:focus {
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            background: white;
+        }
+
+        .nav-search::before {
+            content: "\f002";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2e7d32;
+            font-size: 16px;
+            z-index: 2;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-item {
+            margin-left: 25px;
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #d4edda;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 70%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+            color: #2d3a3a !important;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(251, 192, 45, 0.3);
+            margin-left: 20px;
+        }
+
+        .nav-cta:hover {
+            background: linear-gradient(135deg, #fff176, #ffd54f);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(251, 192, 45, 0.4);
+        }
+
+        .nav-cta::after {
+            display: none;
+        }
+
+        .main-content {
+            margin-top: 80px;
+            padding: 60px 40px;
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .timeline-container {
+            width: 100%;
+            max-width: 1100px;
+            position: relative;
+            padding: 100px 0;
+            background-color: rgba(240, 247, 244, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            margin-bottom: 40px;
+        }
+
+        .pathway {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        .pathway-line {
+            stroke: url(#pathwayGradient);
+            stroke-width: 6;
+            fill: none;
+            stroke-linecap: round;
+            filter: drop-shadow(0 3px 6px rgba(46, 125, 50, 0.3));
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawPath 3s ease-in-out forwards;
+        }
+
+        .leaf-node {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes drawPath {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .cards-container {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 150px;
+        }
+
+        .card {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffffff, #f0f7f4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            font-weight: 600;
+            color: #2d3a3a;
+            text-align: center;
+            padding: 40px;
+            font-size: 24px;
+            border: 4px solid transparent;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .card:nth-child(odd) {
+            animation-delay: 0.5s;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border-color: #388e3c;
+            color: #2e7d32;
+            animation: none;
+        }
+
+        .card.left {
+            align-self: flex-start;
+            margin-left: 120px;
+        }
+
+        .card.right {
+            align-self: flex-end;
+            margin-right: 120px;
+        }
+
+        .card.active {
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
+            color: white;
+            border-color: #81c784;
+        }
+
+        .details-box {
+            position: absolute;
+            width: 350px;
+            background: linear-gradient(135deg, #ffffff, #f1f8e9);
+            color: #2d3a3a;
+            padding: 30px;
+            border-radius: 16px;
+            font-weight: normal;
+            font-size: 18px;
+            line-height: 1.6;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid #c8e6c9;
+            transform-origin: center left;
+        }
+
+        .card.left .details-box {
+            left: 290px;
+            margin-top:20px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.9);
+        }
+
+        .card.right .details-box {
+            right: 290px;
+            margin-top:20px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.9);
+        }
+
+        .card:hover .details-box {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scale(1);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background: white;
+            border-radius: 50%;
+            z-index: 3;
+            border: 5px solid #388e3c;
+            box-shadow: 0 0 0 8px white;
+            transition: all 0.3s ease;
+        }
+
+        .card.left::after {
+            right: -21px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .card.right::after {
+            left: -21px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .card:hover::after {
+            background: #388e3c;
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .card-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #388e3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            top: -30px;
+            box-shadow: 0 5px 15px rgba(56, 142, 60, 0.4);
+        }
+
+        .card.left .card-icon {
+            left: -30px;
+        }
+
+        .card.right .card-icon {
+            right: -30px;
+        }
+
+        .eco-badge {
+            position: absolute;
+            bottom: -20px;
+            width: 100px;
+            height: 35px;
+            background: #388e3c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 20px;
+            z-index: 4;
+        }
+
+        .card.left .eco-badge {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .card.right .eco-badge {
+            right: 50%;
+            transform: translateX(50%);
+        }
+
+        .company-logo {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .esg-score {
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 20px;
+        }
+
+        .esg-rating {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 14px;
+            background-color: #2e7d32;
+            color: white;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .esg-detail {
+            margin: 10px 0;
+        }
+
+        .esg-detail span {
+            font-weight: bold;
+        }
+
+        /* Compare Products Section */
+        .compare-section {
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.9), rgba(39, 107, 43, 0.9));
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            margin-top: 40px;
+        }
+
+        .compare-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .compare-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .compare-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .compare-section p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e0f7e0;
+        }
+
+        .compare-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
+            color: #2d3a3a;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(251, 192, 45, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .compare-btn:hover {
+            background: linear-gradient(135deg, #fff176, #ffd54f);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(251, 192, 45, 0.5);
+        }
+
+        .compare-btn i {
+            margin-left: 10px;
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .compare-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        .carbon-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .carbon-icon {
+            background: rgba(255, 255, 255, 0.15);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .carbon-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, rgba(30, 80, 40, 0.95), rgba(20, 70, 35, 0.95));
+            color: white;
+            padding: 60px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #81c784, #2e7d32, #81c784);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo i {
+            font-size: 32px;
+            margin-right: 15px;
+            color: #a5d6a7;
+        }
+
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-about p {
+            margin: 15px 0;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: #2e7d32;
+            transform: translateY(-3px);
+        }
+
+        .footer-links h3, .footer-newsletter h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h3::after, .footer-newsletter h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #81c784;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-newsletter p {
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .newsletter-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .newsletter-btn:hover {
+            background: #388e3c;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdbdbd;
+            font-size: 14px;
+        }
+
+        .footer-bottom a {
+            color: #81c784;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .leaf-decoration {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .leaf-1 {
+            top: 20%;
+            left: 5%;
+            transform: rotate(-15deg);
+            animation: float-leaf 8s ease-in-out infinite;
+        }
+
+        .leaf-2 {
+            bottom: 15%;
+            right: 8%;
+            transform: rotate(25deg);
+            animation: float-leaf 10s ease-in-out infinite 2s;
+        }
+
+        .leaf-3 {
+            top: 40%;
+            right: 10%;
+            transform: rotate(10deg);
+            animation: float-leaf 7s ease-in-out infinite 1s;
+        }
+
+        @keyframes float-leaf {
+            0%, 100% {
+                transform: translateY(0) rotate(-15deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .footer-links, .footer-newsletter {
+                margin-top: 30px;
+            }
+        }
+
+        .compare-section{
+            
+            margin-bottom:100px;
+        }
+
+        .compare-btn{
+            border: 0px;
+            margin : 0px;
+            visibility: visible;
+        }
+
+        /* Compare Investments Section */
+.compare-investments {
+    background: linear-gradient(135deg, rgba(26, 115, 232, 0.9), rgba(13, 71, 161, 0.9));
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.compare-investments::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.investments-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.compare-investments h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.compare-investments p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #e0f7e0;
+}
+
+.investment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.investment-icon {
+    background: rgba(255, 255, 255, 0.15);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    padding: 15px;
+}
+
+.investment-icon span {
+    font-size: 14px;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.investment-icon:hover {
+    transform: translateY(-5px) scale(1.1);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.invest-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #8bc34a, #689f38);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 18px;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(139, 195, 74, 0.4);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.invest-btn:hover {
+    background: linear-gradient(135deg, #9ccc65, #7cb342);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(139, 195, 74, 0.5);
+}
+
+.invest-btn i {
+    margin-left: 10px;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.invest-btn:hover i {
+    transform: translateX(5px);
+}
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-brand">
+            <i class="fas fa-leaf"></i>
+            EcoInvest
+        </a>
+    
+        <div class="nav-search">
+            <input type="search" id="search" placeholder="Search companies...">
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="/Home" class="nav-link active">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/chatbot" class="nav-link">
+                    <i class="fas fa-chart-line"></i> ChatBot
+                </a>
+            </li>
+    
+            <% if (!currUser) { %>
+                <li class="nav-item">
+                    <a href="/signup" class="nav-link nav-cta">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/login" class="nav-link nav-cta">
+                        <i class="fas fa-sign-in-alt"></i> Log In
+                    </a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a href="/profile" class="nav-link">
+                        <i class="fas fa-user"></i> <%= currUser.username %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout" class="nav-link nav-cta">
+                        <i class="fas fa-sign-out-alt"></i> Log out
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+    
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="timeline-container">
+            <svg class="pathway" viewBox="0 0 1100 1800" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="pathwayGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#2e7d32" />
+                        <stop offset="50%" stop-color="#81c784" />
+                        <stop offset="100%" stop-color="#2e7d32" />
+                    </linearGradient>
+                </defs>
+                <path class="pathway-line" d="M550,100 C550,300 550,500 550,700 C550,900 550,1100 550,1300 C550,1500 550,1700 550,1700"/>
+            </svg>
+
+            <div id="leafNodes"></div>
+
+            <div class="cards-container" id="cardsContainer">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Compare Products Section -->
+    <section class="compare-section">
+        <div class="compare-content">
+            <h2>Make Sustainable Choices Easier</h2>
+            <p>Compare products based on their carbon footprint and environmental impact. Our comprehensive comparison tool helps you make informed decisions for a greener lifestyle.</p>
+            
+            <div class="carbon-icons">
+                <div class="carbon-icon"><i class="fas fa-car"></i></div>
+                <div class="carbon-icon"><i class="fas fa-tshirt"></i></div>
+                <div class="carbon-icon"><i class="fas fa-home"></i></div>
+                <div class="carbon-icon"><i class="fas fa-utensils"></i></div>
+                <div class="carbon-icon"><i class="fas fa-plane"></i></div>
+            </div>
+                <a href="/compare-products" class="compare-btn">
+                    <button class="compare-btn" >Compare Products Now <i class="fas fa-arrow-right"></i></button> 
+                </a>
+            
+        </div>
+    </section>
+
+        <!-- Compare Investments Section -->
+        <section class="compare-investments">
+            <div class="investments-content">
+                <h2>Invest in a Sustainable Future</h2>
+                <p>Compare top ESG-rated companies and sustainable investment funds. Our platform helps you align your portfolio with your values while maintaining strong financial performance.</p>
+                
+                <div class="investment-icons">
+                    <div class="investment-icon">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Stocks</span>
+                    </div>
+                    <div class="investment-icon">
+                        <i class="fas fa-money-bill-trend-up"></i>
+                        <span>ETFs</span>
+                    </div>
+                    <div class="investment-icon">
+                        <i class="fas fa-seedling"></i>
+                        <span>Green Bonds</span>
+                    </div>
+                    <div class="investment-icon">
+                        <i class="fas fa-globe"></i>
+                        <span>Impact Funds</span>
+                    </div>
+                    <div class="investment-icon">
+                        <i class="fas fa-solar-panel"></i>
+                        <span>Clean Tech</span>
+                    </div>
+                </div>
+                
+                <a href="/compare-investments" class="invest-btn">
+                    Compare Investments <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="leaf-decoration leaf-1">🌿</div>
+        <div class="leaf-decoration leaf-2">🍃</div>
+        <div class="leaf-decoration leaf-3">🌱</div>
+        
+        <div class="footer-container">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <i class="fas fa-leaf"></i>
+                    <span class="footer-logo-text">EcoInvest</span>
+                </div>
+                <p>Empowering sustainable investments through transparent ESG ratings and insights for a greener future.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> ESG Ratings</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Methodology</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Research</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Reports</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Case Studies</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Whitepapers</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQs</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to receive updates on sustainable investments and ESG insights.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Your email address">
+                    <button type="submit" class="newsletter-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <p>By subscribing you agree to our <a href="#" style="color: #81c784;">Privacy Policy</a></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2023 EcoInvest. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Sitemap</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // ESG Company data
+        const companies = [
+            {
+                "companyName": "Microsoft Corporation",
+                "industry": "Software and Infrastructure",
+                "environmentalScore": 88.50,
+                "socialScore": 70.00,
+                "governanceScore": 72.00,
+                "ESGScore": 76.83,
+                "ESGRiskRating": "A",
+                "industryRank": "1 out of 5",
+                "logo": "https://static.vecteezy.com/system/resources/previews/027/127/592/original/microsoft-logo-microsoft-icon-transparent-free-png.png",
+                "symbol": "MSFT"
+            },
+            {
+                "companyName": "Unilever",
+                "industry": "Consumer Goods",
+                "environmentalScore": 85.00,
+                "socialScore": 75.00,
+                "governanceScore": 70.00,
+                "ESGScore": 76.67,
+                "ESGRiskRating": "A",
+                "industryRank": "2 out of 5",
+                "logo": "https://logos-marcas.com/wp-content/uploads/2022/01/Unilever-Logo.png",
+                "symbol": "UL"
+            },
+            {
+                "companyName": "Tesla, Inc.",
+                "industry": "Automobiles",
+                "environmentalScore": 90.00,
+                "socialScore": 65.00,
+                "governanceScore": 68.00,
+                "ESGScore": 74.33,
+                "ESGRiskRating": "B",
+                "industryRank": "3 out of 5",
+                "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Tesla_logo.png/1200px-Tesla_logo.png",
+                "symbol": "TSLA"
+            },
+            {
+                "companyName": "Patagonia",
+                "industry": "Apparel",
+                "environmentalScore": 95.00,
+                "socialScore": 80.00,
+                "governanceScore": 75.00,
+                "ESGScore": 83.33,
+                "ESGRiskRating": "A",
+                "industryRank": "1 out of 5",
+                "logo": "https://tse2.mm.bing.net/th?id=OIP.hdKK4e4VGp4cbL7p78KqnwHaFj&pid=Api&P=0&h=180",
+                "symbol": "Private"
+            },
+            {
+                "companyName": "Salesforce",
+                "industry": "Software and Infrastructure",
+                "environmentalScore": 80.00,
+                "socialScore": 78.00,
+                "governanceScore": 74.00,
+                "ESGScore": 77.33,
+                "ESGRiskRating": "A",
+                "industryRank": "2 out of 5",
+                "logo": "https://tse3.mm.bing.net/th?id=OIP.vJzP4ngqOD78iyOyJZn4XQHaFL&pid=Api&P=0&h=180",
+                "symbol": "CRM"
+            },
+            {
+                "companyName": "Google LLC",
+                "industry": "Internet Services",
+                "environmentalScore": 85.00,
+                "socialScore": 72.00,
+                "governanceScore": 70.00,
+                "ESGScore": 75.67,
+                "ESGRiskRating": "A",
+                "industryRank": "3 out of 5",
+                "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png",
+                "symbol": "GOOGL"
+            }
+        ];
+
+        // Generate cards for companies
+        const container = document.getElementById('cardsContainer');
+        companies.forEach((company, index) => {
+            const card = document.createElement('div');
+            card.className = `card ${index % 2 === 0 ? 'left' : 'right'}`;
+            
+            // Create logo image
+            const logo = document.createElement('img');
+            logo.className = 'company-logo';
+            logo.src = company.logo;
+            logo.alt = `${company.companyName} logo`;
+            
+            // Create details box with ESG information
+            const detailsBox = document.createElement('div');
+            detailsBox.className = 'details-box';
+            detailsBox.innerHTML = `
+                <h3>${company.companyName}</h3>
+                <div class="esg-detail"><span>Industry:</span> ${company.industry}</div>
+                <div class="esg-detail"><span>Symbol:</span> ${company.symbol}</div>
+                <div class="esg-detail">
+                                        <span>ESG Score:</span> 
+                    <span class="esg-score">${company.ESGScore.toFixed(2)}</span>
+                    <span class="esg-rating">${company.ESGRiskRating}</span>
+                </div>
+                <div class="esg-detail"><span>Environmental:</span> ${company.environmentalScore}</div>
+                <div class="esg-detail"><span>Social:</span> ${company.socialScore}</div>
+                <div class="esg-detail"><span>Governance:</span> ${company.governanceScore}</div>
+                <div class="esg-detail"><span>Industry Rank:</span> ${company.industryRank}</div>
+            `;
+            
+            // Create industry badge
+            const badge = document.createElement('div');
+            badge.className = 'eco-badge';
+            badge.textContent = company.industry.split(' ')[0]; // Show first word of industry
+            
+            card.appendChild(logo);
+            card.appendChild(detailsBox);
+            card.appendChild(badge);
+            container.appendChild(card);
+        });
+
+        // Generate leaf nodes along the pathway
+        function createLeafNodes() {
+            const leafContainer = document.getElementById('leafNodes');
+            const leafCount = 30;
+            const leafTypes = ['🍃', '🌿', '🍀', '🌱'];
+            
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf-node';
+                
+                // Random properties
+                const size = Math.random() * 30 + 15;
+                const posX = Math.random() * 90 + 5;
+                const posY = Math.random() * 100;
+                const rotation = Math.random() * 360;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 6 + 4;
+                const leafType = leafTypes[Math.floor(Math.random() * leafTypes.length)];
+                
+                leaf.style.width = `${size}px`;
+                leaf.style.height = `${size}px`;
+                leaf.style.left = `${posX}%`;
+                leaf.style.top = `${posY}%`;
+                leaf.style.transform = `rotate(${rotation}deg)`;
+                leaf.style.animationDelay = `${delay}s`;
+                leaf.style.animationDuration = `${duration}s`;
+                leaf.textContent = leafType;
+                leaf.style.fontSize = `${size}px`;
+                
+                leafContainer.appendChild(leaf);
+            }
+        }
+
+        // Generate pathway with perfect curves
+        function generatePathway() {
+            const cards = document.querySelectorAll('.card');
+            const svgPath = document.querySelector('.pathway-line');
+            let pathData = '';
+            const containerRect = document.querySelector('.timeline-container').getBoundingClientRect();
+            
+            // Start with first card
+            const firstCard = cards[0];
+            const firstRect = firstCard.getBoundingClientRect();
+            const startX = firstRect.left + firstRect.width/2 - containerRect.left;
+            const startY = firstRect.top + firstRect.height/2 - containerRect.top;
+            pathData = `M${startX},${startY}`;
+            
+            // Create smooth pathway through all cards
+            for (let i = 1; i < cards.length; i++) {
+                const prevCard = cards[i-1];
+                const currentCard = cards[i];
+                const prevRect = prevCard.getBoundingClientRect();
+                const currentRect = currentCard.getBoundingClientRect();
+                
+                const prevX = prevRect.left + prevRect.width/2 - containerRect.left;
+                const prevY = prevRect.top + prevRect.height/2 - containerRect.top;
+                const currentX = currentRect.left + currentRect.width/2 - containerRect.left;
+                const currentY = currentRect.top + currentRect.height/2 - containerRect.top;
+                
+                // Calculate control points for perfect curves
+                const yDiff = currentY - prevY;
+                const xDiff = currentX - prevX;
+                
+                // First control point (near previous point)
+                const cp1x = prevX + xDiff * 0.25;
+                const cp1y = prevY + yDiff * 0.75;
+                
+                // Second control point (near current point)
+                const cp2x = currentX - xDiff * 0.25;
+                const cp2y = currentY - yDiff * 0.75;
+                
+                pathData += ` C${cp1x},${cp1y} ${cp2x},${cp2y} ${currentX},${currentY}`;
+            }
+            
+            svgPath.setAttribute('d', pathData);
+            
+            // Adjust viewBox to fit all content perfectly
+            const lastCard = cards[cards.length-1];
+            const lastRect = lastCard.getBoundingClientRect();
+            const containerHeight = lastRect.bottom - containerRect.top + 200;
+            document.querySelector('.pathway').setAttribute('viewBox', `0 0 1100 ${containerHeight}`);
+        }
+
+        // Initialize and handle resize
+        window.addEventListener('load', () => {
+            generatePathway();
+            createLeafNodes();
+            
+        //     // Add click handler for compare button
+        //     document.querySelector('.compare-btn').addEventListener('click', function(e) {
+        //         e.preventDefault();
+        //         // Here you would normally redirect to your comparison page
+        //         // For this example, we'll just show an alert
+        //         alert('Redirecting to the product comparison page!');
+        //         // window.location.href = '/compare-products'; // Uncomment this in your actual implementation
+        //     });
+        });
+        window.addEventListener('resize', generatePathway);
+
+        // Enhanced Navbar JavaScript
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Search Input Animation
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        searchInput.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('.newsletter-input');
+                if (emailInput.value) {
+                    alert('Thank you for subscribing to our newsletter!');
+                    emailInput.value = '';
+                }
+            });
+        }
+
+        // Add hover effects to carbon icons
+        document.querySelectorAll('.carbon-icon').forEach(icon => {
+            icon.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.1)';
+                this.style.background = 'rgba(255, 255, 255, 0.25)';
+            });
+            icon.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.background = 'rgba(255, 255, 255, 0.15)';
+            });
+        });
+
+        // Add hover effects to investment icons
+        document.querySelectorAll('.investment-icon').forEach(icon => {
+            icon.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.1)';
+                this.style.background = 'rgba(255, 255, 255, 0.25)';
+            });
+            icon.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.background = 'rgba(255, 255, 255, 0.15)';
+            });
+        });
+
+    </script>
+</body>
+</html>

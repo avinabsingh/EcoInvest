@@ -1,0 +1,36 @@
+Category,Product,Emission Factor (kg CO₂e/unit),Unit,Source
+Food,Apple,0.4,kg,DEFRA
+Food,Banana,0.3,kg,DEFRA
+Food,Beef,27.0,kg,FAO
+Food,Chicken,6.9,kg,FAO
+Food,Milk,3.2,liter,DEFRA
+Food,Rice,4.0,kg,FAO
+Food,Bread,0.6,kg,EPA
+Food,Chocolate,19.0,kg,FAO
+Electronics,Smartphone,75.0,unit,Apple (est.)
+Electronics,Laptop,250.0,unit,Apple (est.)
+Electronics,Tablet,130.0,unit,Apple (est.)
+Electronics,LED TV,300.0,unit,EPA
+Electronics,Gaming Console,250.0,unit,EPA
+Electronics,Smartwatch,35.0,unit,Climatiq
+Clothing,Cotton T-Shirt,2.1,unit,DEFRA
+Clothing,Jeans,33.0,unit,Levi’s (est.)
+Clothing,Wool Sweater,12.0,unit,DEFRA
+Clothing,Polyester Jacket,25.0,unit,DEFRA
+Clothing,Leather Shoes,50.0,unit,FAO
+Transport,Diesel Car (Average),2.68,km,EPA
+Transport,Electric Car (Battery),0.12,km,Climatiq
+Transport,Motorbike,1.6,km,EPA
+Transport,Airplane (Short-haul),0.25,km,IPCC
+Transport,Airplane (Long-haul),0.15,km,IPCC
+Transport,Bus (Public),0.1,km,EPA
+Energy,Electricity (US Grid),0.45,kWh,EPA
+Energy,Electricity (EU Grid),0.25,kWh,Climatiq
+Energy,Natural Gas,2.3,m³,EPA
+Energy,Coal,2.9,kg,EPA
+Energy,Solar Energy,0.05,kWh,IPCC
+Construction,Cement,0.9,kg,IPCC
+Construction,Steel,1.85,kg,IPCC
+Construction,Brick,0.3,kg,EPA
+Construction,Glass,1.2,kg,EPA
+Construction,Aluminum,8.1,kg,IPCC

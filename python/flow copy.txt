@@ -1,0 +1,16 @@
+🔵 Step 1: User visits an Amazon product page
+content.js extracts product details.
+
+It sends data to background.js.
+
+🔴 Step 2: User opens the extension popup
+popup.js requests product data from background.js.
+
+background.js sends back the stored data.
+
+popup.js updates the UI.
+
+
+-content.js automatically runs when a user opens an Amazon product page because of the manifest.json settings.
+-This tells Chrome to inject and execute content.js whenever a matching URL is loaded (amazon.in pages).
+-It means that as soon as the user loads or refreshes an Amazon product page, content.js runs automatically.

@@ -1,0 +1,98 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4fbf2;
+    color: #2e7d32;
+    text-align: center;
+    padding: 20px 15px;
+    width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Heading */
+h2 {
+    color: #1b5e20;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #c8e6c9;
+    font-weight: 600;
+}
+
+/* Buttons */
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    margin: 10px 0;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #388e3c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Info Section */
+#carbon-info {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid #c8e6c9;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+#carbon-info:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+#product-info, #carbon-score {
+    font-size: 14px;
+    color: #1b5e20;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+#product-info {
+    font-size: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #a5d6a7;
+    margin-bottom: 12px;
+}
+
+#sustainabilty {
+    font-size: 13px;
+    color: #2e7d32;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+/* Animation for when content loads */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#carbon-info {
+    animation: fadeIn 0.4s ease-out;
+}
